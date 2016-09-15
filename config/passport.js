@@ -1,23 +1,20 @@
-var passport = require("passport")
-  , LocalStrategy = require("passport-local").Strategy
-  , FacebookStrategy = require("passport-facebook").Strategy
-  , configAuth = require("./auth.js")
+var passport = require("passport");
+var LocalStrategy = require("passport-local").Strategy;
+var FacebookStrategy = require("passport-facebook").Strategy;
 
+var configAuth = require("./auth.js");
 var User = require("../models/User.js")
 
 // To serialize currently logged in user into string data that can be stored in cookie.
 passport.serializeUser(function(user, done) {
   done(null, user.id)
-})
-
+});
 // To extract user ID from cookie and find corresponding user in database.
 passport.deserializeUser(function(id, done) {
   User.findById(id, function(err, user) {
     done(err, user)
   })
-})
-
-// Strategy for local sign up.
+});
 passport.use("local-signup", new LocalStrategy({
   usernameField: "email",
   passwordField: "password",
@@ -39,9 +36,7 @@ passport.use("local-signup", new LocalStrategy({
       return done(null, newUser)
     })
   })
-}))
-
-// Strategy for local login.
+}));
 passport.use("local-login", new LocalStrategy({
   usernameField: "email",
   passwordField: "password",
@@ -54,8 +49,7 @@ passport.use("local-login", new LocalStrategy({
     if (!user.validPassword(password)) return done(null, false, req.flash("loginMessage", "Invalid credentials."))
     return done(null, user)
   })
-}))
-
+}));
 passport.use(new FacebookStrategy({
     clientID: configAuth.facebookAuth.clientID,
     clientSecret: configAuth.facebookAuth.clientSecret,
@@ -78,6 +72,5 @@ passport.use(new FacebookStrategy({
       })
     }
   })
-}))
-
-module.exports = passport
+}));
+module.exports = passport;

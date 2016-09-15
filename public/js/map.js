@@ -1,13 +1,12 @@
-var currentUser
-  , socket;
-
+var currentUser;
+var socket;
 // If browser supports geolocation, display map centered on current location; otherwise, prompt user to consent to location sharing.
 function generateMap() {
   // Retrieve current user document and save to variable.
   $.get("/api/users/current")
   .done(function(user) {
-    currentUser = user
-
+     currentUser = user
+    // If / else - supports geolocation or doesn't
     if (navigator.geolocation) {
       // Browser supports geolocation.
       console.log("Geolocation supported.")

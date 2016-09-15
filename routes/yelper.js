@@ -1,15 +1,14 @@
-// require modules and instantiate the yelperRouter
-var oauthSignature = require('oauth-signature'),
-           express = require('express'),
-           request = require('request'),
-             nonce = require('nonce')(),
-       querystring = require('querystring'),
-            lodash = require('lodash'),
-        configAuth = require('../config/auth.js'),
-      yelperRouter = express.Router()
+var express = require('express');
+var router = express.Router();
+var request = require('request');
+var oauthSignature = require('oauth-signature');
+var querystring = require('querystring');
+var nonce = require('nonce')();
+var lodash = require('lodash');
+var configAuth = require('../config/auth.js');
 
 // post route for /result;
-yelperRouter.post('/result', function(req,res) {
+router.post('/result', function(req,res) {
   // category stores the selected values to be used in the category filter
   var category;
   // convert req.body.cuisines from an array into a string
@@ -19,15 +18,13 @@ yelperRouter.post('/result', function(req,res) {
     // if no value is selected for category filter, set category equal to "restaurants" so that the displayed result only includes restaurants
     category = "restaurants"
   }
-
   // pass in the search criterias
   var current_search = {
     location: req.body.location,
     term: req.body.term,
     cll: req.body.cll,
     category_filter: category
-  }
-
+  };
   // create a function that compiles the search parameters and makes a request to yelp when invoked
   var request_yelp = function(set_parameters) {
     // search string without the authentication information and the search criteria
@@ -84,6 +81,6 @@ yelperRouter.post('/result', function(req,res) {
    }
    // make a request to yelp using the search parameters
    request_yelp(current_search)
-})
+});
 
-module.exports = yelperRouter
+module.exports = router;

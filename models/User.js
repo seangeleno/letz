@@ -1,6 +1,6 @@
-var mongoose = require('mongoose')
-  , bcrypt = require('bcrypt-nodejs')
-  , Schema = mongoose.Schema
+var mongoose = require('mongoose');
+var bcrypt = require('bcrypt-nodejs');
+var Schema = mongoose.Schema;
 
 // Schema for local and Facebook users.
 var userSchema = new Schema({
@@ -23,7 +23,7 @@ var userSchema = new Schema({
     },
     currentStatus: String,
     socketId: String
-})
+});
 
 userSchema.methods.generateHash = function(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null)
